@@ -83,7 +83,8 @@
             display: block; /* Overrides hidden to show the active screen */
         } /* Closes the active class rule */
 
-    </style> </head> <body> <div id="landing-screen" class="active"> <div id="logo-container"> <img src="https://via.placeholder.com/150/000000/FFFFFF/?text=LOGO" alt="Location Logo"> </div> <div id="score-display"> <h2>Total Score: <span id="current-score">0</span></h2> </div> <div id="room-groups"> <button onclick="showRoomGroup(1)"> Rooms 1 - 5 </button> <button onclick="showRoomGroup(2)"> Rooms 6 - 10 </button> <button onclick="showRoomGroup(3)"> Rooms 11 - 15 </button> <button onclick="showRoomGroup(4)"> Rooms 16 - 20 </button> </div> </div> <script>
+    </style> </head>
+        <body> <div id="landing-screen" class="active"> <div id="logo-container"> <img src="logo.png" alt="Location Logo"> </div> <div id="score-display"> <h2>Total Score: <span id="current-score">0</span></h2> </div> <div id="room-groups"> <button onclick="showRoomGroup(1)"> Rooms 1 - 5 </button> <button onclick="showRoomGroup(2)"> Rooms 6 - 10 </button> <button onclick="showRoomGroup(3)"> Rooms 11 - 15 </button> <button onclick="showRoomGroup(4)"> Rooms 16 - 20 </button> </div> </div> <script> 
         // We will put the logic here in the next step!
         function showRoomGroup(groupNumber) {
             console.log("You clicked group: " + groupNumber);
@@ -91,3 +92,4 @@
     </script>
 </body>
 </html>
+
