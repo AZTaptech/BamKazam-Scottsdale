@@ -160,11 +160,45 @@
     </div>
 
     <script>
-        // Logic goes here...
-    </script>
+<script>
+        // FUNCTION 1: Hides the menu and shows a specific group of rooms
+        function showRoomGroup(groupNumber) {
+            
+            // Step 1: Hide the Landing Page
+            // We find the 'landing-screen' and set class to 'screen' (hidden)
+            document.getElementById('landing-screen').className = 'screen';
+
+            // Step 2: Show the requested Group
+            // We build the ID name (e.g., 'group-1') using the number passed in
+            var groupToOpen = 'group-' + groupNumber;
+            
+            // We find that group and set class to 'active' (visible)
+            document.getElementById(groupToOpen).className = 'active';
+        }
+
+        // FUNCTION 2: Hides the current group and shows the menu again
+        function showLandingPage() {
+            
+            // Step 1: Hide all groups (We hide all 4 just to be safe/lazy)
+            document.getElementById('group-1').className = 'screen';
+            document.getElementById('group-2').className = 'screen';
+            document.getElementById('group-3').className = 'screen';
+            document.getElementById('group-4').className = 'screen';
+
+            // Step 2: Show the Landing Page
+            document.getElementById('landing-screen').className = 'active';
+        }
+
+        // FUNCTION 3: Placeholder for opening a specific room (coming next!)
+        function openRoom(roomNumber) {
+            console.log("Room " + roomNumber + " clicked! (Logic coming soon)");
+            alert("You clicked Room " + roomNumber); // Temporary pop-up to prove it works
+        }
+    </script>    </script>
 
 </body>
 </html>
+
 
 
 
