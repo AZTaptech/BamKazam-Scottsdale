@@ -339,7 +339,7 @@
 
         // --- GAME LOGIC ---
 
-        function openRoom(roomNumber) {
+       function openRoom(roomNumber) {
             currentActiveRoom = roomNumber;
             var data = roomData[roomNumber];
 
@@ -354,11 +354,10 @@
             // Reset all hints to hidden first
             resetHints();
 
-            // NEW: Check if this room has hints already bought
+            // Check if this room has hints already bought
             if (purchasedHints[roomNumber]) {
                 var hintsForThisRoom = purchasedHints[roomNumber];
                 
-                // If hint 1 was bought before, show it now for free
                 if (hintsForThisRoom.includes(1)) {
                     document.getElementById('hint-btn-1').style.display = 'none';
                     document.getElementById('hint-text-1').style.display = 'block';
@@ -373,6 +372,13 @@
                 }
             }
 
+            // --- THE FIX: HIDE MENUS AND SHOW ROOM ---
+            document.getElementById('group-1').className = 'screen';
+            document.getElementById('group-2').className = 'screen';
+            document.getElementById('group-3').className = 'screen';
+            document.getElementById('group-4').className = 'screen';
+            document.getElementById('room-screen').className = 'active';
+        } 
 
         function resetHints() {
             document.getElementById('hint-text-1').style.display = 'none';
@@ -502,6 +508,7 @@
     </script>
 </body>
 </html>
+
 
 
 
