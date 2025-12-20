@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Room Score Tracker</title>
+
+
+
+
+<style> /* Opens the CSS section to define the visual style */
+        
+        body { /* Selects the entire page body to set defaults */
+            background-color: #121212; /* Sets the background to a dark, modern grey-black */
+            color: #ffffff; /* Sets the default text color to white for contrast */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Sets a clean, modern font stack */
+            margin: 0; /* Removes default messy spacing around the edges */
+            padding: 0; /* Removes default internal spacing */
+            display: flex; /* Uses Flexbox layout to align items easily */
+            flex-direction: column; /* Stacks items vertically (top to bottom) */
+            align-items: center; /* Centers items horizontally in the middle */
+            min-height: 100vh; /* Ensures the background fills the full phone screen height */
+        } /* Closes the body style rule */
+
+        #landing-screen { /* Targets the main container for the landing page */
+            width: 100%; /* Makes the container take up the full width */
+            max-width: 400px; /* Limits width on desktop so it looks like a mobile app */
+            padding: 20px; /* Adds breathing room inside the edges of the screen */
+            box-sizing: border-box; /* Ensures padding doesn't make the box wider than 100% */
+            text-align: center; /* Centers all text inside this container */
+        } /* Closes the landing screen style rule */
+
+        #logo-container img { /* Targets the image inside the logo container */
+            width: 150px; /* Sets a fixed width for the logo */
+            height: auto; /* Keeps the logo aspect ratio correct (no stretching) */
+            margin-bottom: 20px; /* Adds space below the logo */
+            border-radius: 50%; /* Optional: Makes the logo image circular */
+            border: 3px solid #00d4ff; /* Adds a cool cyan border around the logo */
+        } /* Closes the logo image style rule */
+
+        #score-display { /* Targets the score area */
+            background-color: #1e1e1e; /* Sets a slightly lighter background for the score box */
+            padding: 15px; /* Adds space inside the score box */
+            border-radius: 12px; /* Rounds the corners of the score box */
+            margin-bottom: 30px; /* Pushes the buttons away from the score box */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); /* Adds a subtle shadow for depth */
+        } /* Closes the score display style rule */
+
+        h2 { /* Targets the heading text */
+            margin: 0; /* Removes default spacing styling from the heading */
+            font-size: 1.5rem; /* Makes the font size nice and readable */
+        } /* Closes the h2 style rule */
+
+        #current-score { /* Targets the actual score number */
+            color: #00d4ff; /* Makes the score number a bright cyan color */
+            font-weight: bold; /* Makes the score number thick and bold */
+        } /* Closes the current score style rule */
+
+        button { /* Targets all buttons on the page */
+            width: 100%; /* Makes buttons stretch to fill the width */
+            padding: 15px; /* Adds nice internal spacing for easy tapping */
+            margin-bottom: 15px; /* Adds space between each button */
+            background-color: #333333; /* Sets the button background color to dark grey */
+            color: white; /* Sets the button text color to white */
+            border: none; /* Removes the ugly default grey border */
+            border-radius: 8px; /* Rounds the corners of the buttons */
+            font-size: 1.1rem; /* Increases text size for readability */
+            cursor: pointer; /* Changes the mouse cursor to a hand on computers */
+            transition: background-color 0.3s; /* Smoothly animates color changes */
+        } /* Closes the button style rule */
+
+        button:active { /* Targets the button specifically when it is being tapped */
+            background-color: #00d4ff; /* Flashes blue when you tap it */
+            color: black; /* Changes text to black for contrast when tapped */
+            transform: scale(0.98); /* Slightly shrinks the button for a "click" feel */
+        } /* Closes the button active state rule */
+
+        .screen { /* Targets the screen class we made earlier */
+            display: none; /* Keeps screens hidden by default */
+        } /* Closes the screen class rule */
+
+        .active { /* Targets the active class */
+            display: block; /* Overrides hidden to show the active screen */
+        } /* Closes the active class rule */
+
+    </style> </head> <body> <div id="landing-screen" class="active"> <div id="logo-container"> <img src="https://via.placeholder.com/150/000000/FFFFFF/?text=LOGO" alt="Location Logo"> </div> <div id="score-display"> <h2>Total Score: <span id="current-score">0</span></h2> </div> <div id="room-groups"> <button onclick="showRoomGroup(1)"> Rooms 1 - 5 </button> <button onclick="showRoomGroup(2)"> Rooms 6 - 10 </button> <button onclick="showRoomGroup(3)"> Rooms 11 - 15 </button> <button onclick="showRoomGroup(4)"> Rooms 16 - 20 </button> </div> </div> <script>
+        // We will put the logic here in the next step!
+        function showRoomGroup(groupNumber) {
+            console.log("You clicked group: " + groupNumber);
+        }
+    </script>
+</body>
+</html>
