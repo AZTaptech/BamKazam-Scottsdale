@@ -159,6 +159,48 @@
         </button>
     </div>
 
+<div id="room-screen" class="screen">
+        
+        <h2 id="room-title">Room X</h2>
+
+        <div id="hints-container">
+            <h3>Hints (Cost points!)</h3>
+            
+            <button onclick="revealHint(1)" id="hint-btn-1" style="background-color: #f39c12;">
+                Show Hint 1 (-5 pts)
+            </button>
+            <p id="hint-text-1" style="display:none; color: #f39c12;">
+                Here is the first clue...
+            </p>
+
+            <button onclick="revealHint(2)" id="hint-btn-2" style="background-color: #e67e22;">
+                Show Hint 2 (-10 pts)
+            </button>
+            <p id="hint-text-2" style="display:none; color: #e67e22;">
+                Here is the second clue...
+            </p>
+
+            <button onclick="revealHint(3)" id="hint-btn-3" style="background-color: #d35400;">
+                Show Hint 3 (-15 pts)
+            </button>
+            <p id="hint-text-3" style="display:none; color: #d35400;">
+                Here is the final clue...
+            </p>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button onclick="completeRoom()" style="background-color: #27ae60; padding: 20px; font-size: 1.2rem;">
+                ROOM COMPLETED (+100 pts)
+            </button>
+        </div>
+
+        <button onclick="exitRoom()" style="background-color: #c0392b; margin-top: 20px;">
+            Give Up / Back
+        </button>
+
+    </div>
+
+        
     <script>
         // FUNCTION 1: Hides the menu and shows a specific group of rooms
         function showRoomGroup(groupNumber) {
@@ -189,14 +231,101 @@
         }
 
         // FUNCTION 3: Placeholder for opening a specific room (coming next!)
-        function openRoom(roomNumber) {
-            console.log("Room " + roomNumber + " clicked! (Logic coming soon)");
-            alert("You clicked Room " + roomNumber); // Temporary pop-up to prove it works
-        }
+        // --- VARIABLES ( The Memory of the App) ---
+    var currentActiveRoom = 0; // Stores which room the user is currently inside
+    var totalScore = 0; // Stores the user's running score
+
+    // This replaces the old "alert" function
+    function openRoom(roomNumber) {
+        
+        // 1. Save the room number so we can use it for scoring later
+        currentActiveRoom = roomNumber;
+
+        // 2. Change the Title Text on the screen
+        // We find the header and replace "Room X" with the real number
+        document.getElementById('room-title').innerText = 'Room ' + roomNumber;
+
+        // 3. Reset the Hints (Cover them up again)
+        // We act like a janitor cleaning up the room before the user enters
+        resetHints();
+
+        // 4. Hide all the Group menus
+        // We hide everything to be safe, so we don't have overlapping screens
+        document.getElementById('group-1').className = 'screen';
+        document.getElementById('group-2').className = 'screen';
+        document.getElementById('group-3').className = 'screen';
+        document.getElementById('group-4').className = 'screen';
+
+        // 5. Finally, reveal the Game Screen
+        document.getElementById('room-screen').className = 'active';
+    }
+
+    // A helper function to hide hints when entering a new room
+    function resetHints() {
+        // Hide the text paragraphs
+        document.getElementById('hint-text-1').style.display = 'none';
+        document.getElementById('hint-text-2').style.display = 'none';
+        document.getElementById('hint-text-3').style.display = 'none';
+
+        // Show the buttons again (in case they were hidden)
+        document.getElementById('hint-btn-1').style.display = 'inline-block';
+        document.getElementById('hint-btn-2').style.display = 'inline-block';
+        document.getElementById('hint-btn-3').style.display = 'inline-block';
+    }
+
+    // The function for the "Give Up / Back" button inside the room
+    function exitRoom() {
+        // 1. Hide the Room Screen
+        document.getElementById('room-screen').className = 'screen';
+
+        // 2. Figure out which Group to go back to.
+        // Math trick: Room 1-5 is Group 1. Room 6-10 is Group 2.
+        // We divide by 5 and round up!
+        var groupToGoBackTo = Math.ceil(currentActiveRoom / 5);
+
+        // 3. Show that group
+        var groupID = 'group-' + groupToGoBackTo;
+        document.getElementById(groupID).className = 'active';
+    }
+
+    // FUNCTION: Reveal a hint and subtract points
+    function revealHint(hintNumber) {
+        // 1. Hide the button
+        document.getElementById('hint-btn-' + hintNumber).style.display = 'none';
+        
+        // 2. Show the text
+        document.getElementById('hint-text-' + hintNumber).style.display = 'block';
+
+        // 3. Subtract Score
+        if(hintNumber === 1) totalScore -= 5;
+        if(hintNumber === 2) totalScore -= 10;
+        if(hintNumber === 3) totalScore -= 15;
+
+        // 4. Update the Score on the screen (We need to update the landing page text)
+        document.getElementById('current-score').innerText = totalScore;
+    }
+
+    // FUNCTION: Complete the room and add points
+    function completeRoom() {
+        // 1. Add 100 points
+        totalScore += 100;
+
+        // 2. Update the visual score
+        document.getElementById('current-score').innerText = totalScore;
+
+        // 3. Kick them back to the landing page to see their new score!
+        alert("Room Completed! +100 Points");
+        
+        // Hide room, Show Landing Page
+        document.getElementById('room-screen').className = 'screen';
+        document.getElementById('landing-screen').className = 'active';
+    }        
+            
     </script>
 
 </body>
 </html>
+
 
 
 
