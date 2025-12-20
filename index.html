@@ -152,6 +152,13 @@
             <button onclick="showRoomGroup(4)"> Rooms 16 - 20 </button>
         </div> </div>
 
+<div style="margin-top: 40px; border-top: 1px solid #333; padding-top: 20px;">
+            <p style="color: #666; font-size: 0.9rem;">Admin Options</p>
+            <button onclick="resetGame()" style="background-color: #333; border: 1px solid #555; font-size: 0.9rem; padding: 10px;">
+                🗑️ Reset / New Game
+            </button>
+        </div>
+        
    <div id="group-1" class="screen">
         <h2>Rooms 1 - 5</h2>
         <div class="room-list">
@@ -250,197 +257,205 @@
     </div>
 
         
-    <script>
-        // FUNCTION 1: Hides the menu and shows a specific group of rooms
-        function showRoomGroup(groupNumber) {
-            
-            // Step 1: Hide the Landing Page
-            // We find the 'landing-screen' and set class to 'screen' (hidden)
-            document.getElementById('landing-screen').className = 'screen';
+<script>
+        // --- VARIABLES (The Memory) ---
+        var currentActiveRoom = 0; 
+        var totalScore = 0; 
+        
+        // NEW: An array to keep track of which rooms are done (e.g., [1, 5, 12])
+        var completedRooms = []; 
 
-            // Step 2: Show the requested Group
-            // We build the ID name (e.g., 'group-1') using the number passed in
-            var groupToOpen = 'group-' + groupNumber;
+        // --- ON LOAD: CHECK FOR SAVED GAME ---
+        // This runs instantly when the page loads
+        var savedScore = localStorage.getItem('siteScore');
+        var savedRooms = localStorage.getItem('siteRooms');
+
+        if (savedScore) {
+            // 1. Restore the Score
+            totalScore = parseInt(savedScore); // Convert text to number
+            document.getElementById('current-score').innerText = totalScore;
+        }
+
+        if (savedRooms) {
+            // 2. Restore the Completed Rooms
+            completedRooms = JSON.parse(savedRooms); // Convert text back to list
             
-            // We find that group and set class to 'active' (visible)
+            // Loop through the list and cross them out again
+            for (var i = 0; i < completedRooms.length; i++) {
+                var roomNum = completedRooms[i];
+                var btn = document.getElementById('btn-room-' + roomNum);
+                if (btn) btn.classList.add('completed-room');
+            }
+        }
+
+        // --- NAVIGATION FUNCTIONS ---
+
+        function showRoomGroup(groupNumber) {
+            document.getElementById('landing-screen').className = 'screen';
+            var groupToOpen = 'group-' + groupNumber;
             document.getElementById(groupToOpen).className = 'active';
         }
 
-        // FUNCTION 2: Hides the current group and shows the menu again
         function showLandingPage() {
-            
-            // Step 1: Hide all groups (We hide all 4 just to be safe/lazy)
+            // Hide all groups
             document.getElementById('group-1').className = 'screen';
             document.getElementById('group-2').className = 'screen';
             document.getElementById('group-3').className = 'screen';
             document.getElementById('group-4').className = 'screen';
-
-            // Step 2: Show the Landing Page
+            // Show Landing
             document.getElementById('landing-screen').className = 'active';
         }
 
-// --- THE HINT DATABASE ---
-    // This is where you edit the text for every room!
-    var roomData = {
-        1: {
-            hint1: "Room 1 Hint 1: Check under the doormat.",
-            hint2: "Room 1 Hint 2: The key is silver.",
-            hint3: "Room 1 Hint 3: Code is 5555."
-        },
-        2: {
-            hint1: "Room 2 Hint 1: Look at the painting.",
-            hint2: "Room 2 Hint 2: Count the apples.",
-            hint3: "Room 2 Hint 3: It is behind the chair."
-        },
-        3: {
-            hint1: "Room 3 Hint 1: Text goes here...",
-            hint2: "Room 3 Hint 2: Text goes here...",
-            hint3: "Room 3 Hint 3: Text goes here..."
-        },
-        // ... You can copy/paste this block for rooms 4-20 ...
-        4: { hint1: "...", hint2: "...", hint3: "..." },
-        5: { hint1: "...", hint2: "...", hint3: "..." },
-        6: { hint1: "...", hint2: "...", hint3: "..." },
-        7: { hint1: "...", hint2: "...", hint3: "..." },
-        8: { hint1: "...", hint2: "...", hint3: "..." },
-        9: { hint1: "...", hint2: "...", hint3: "..." },
-        10: { hint1: "...", hint2: "...", hint3: "..." },
-        11: { hint1: "...", hint2: "...", hint3: "..." },
-        12: { hint1: "...", hint2: "...", hint3: "..." },
-        13: { hint1: "...", hint2: "...", hint3: "..." },
-        14: { hint1: "...", hint2: "...", hint3: "..." },
-        15: { hint1: "...", hint2: "...", hint3: "..." },
-        16: { hint1: "...", hint2: "...", hint3: "..." },
-        17: { hint1: "...", hint2: "...", hint3: "..." },
-        18: { hint1: "...", hint2: "...", hint3: "..." },
-        19: { hint1: "...", hint2: "...", hint3: "..." },
-        20: { hint1: "...", hint2: "...", hint3: "..." }
-    };
+        // --- GAME LOGIC ---
 
+        function openRoom(roomNumber) {
+            currentActiveRoom = roomNumber;
+            var data = roomData[roomNumber];
 
+            document.getElementById('room-title').innerText = 'Room ' + roomNumber;
             
-        // FUNCTION 3: Placeholder for opening a specific room (coming next!)
-        // --- VARIABLES ( The Memory of the App) ---
-    var currentActiveRoom = 0; // Stores which room the user is currently inside
-    var totalScore = 0; // Stores the user's running score
+            if (data) {
+                document.getElementById('hint-text-1').innerText = data.hint1;
+                document.getElementById('hint-text-2').innerText = data.hint2;
+                document.getElementById('hint-text-3').innerText = data.hint3;
+            } else {
+                document.getElementById('hint-text-1').innerText = "Hints coming soon...";
+                document.getElementById('hint-text-2').innerText = "Hints coming soon...";
+                document.getElementById('hint-text-3').innerText = "Hints coming soon...";
+            }
 
-    // This replaces the old "alert" function
-function openRoom(roomNumber) {
-        
-        // 1. Save the room number
-        currentActiveRoom = roomNumber;
+            resetHints();
 
-        // 2. FIND THE DATA for this specific room
-        // We look inside our 'roomData' variable for the number
-        var data = roomData[roomNumber];
-
-        // 3. Update the HTML Text
-        document.getElementById('room-title').innerText = 'Room ' + roomNumber;
-        
-        // This is the magic part: We inject the text from the database into the screen
-        if (data) {
-            document.getElementById('hint-text-1').innerText = data.hint1;
-            document.getElementById('hint-text-2').innerText = data.hint2;
-            document.getElementById('hint-text-3').innerText = data.hint3;
-        } else {
-            // Fallback if you forgot to add data for a room
-            document.getElementById('hint-text-1').innerText = "Hints coming soon...";
-            document.getElementById('hint-text-2').innerText = "Hints coming soon...";
-            document.getElementById('hint-text-3').innerText = "Hints coming soon...";
+            // Hide menus
+            document.getElementById('group-1').className = 'screen';
+            document.getElementById('group-2').className = 'screen';
+            document.getElementById('group-3').className = 'screen';
+            document.getElementById('group-4').className = 'screen';
+            
+            // Show Room
+            document.getElementById('room-screen').className = 'active';
         }
 
-        // 4. Reset the Hints (Cover them up again)
-        resetHints();
-
-        // 5. Hide all the Group menus
-        document.getElementById('group-1').className = 'screen';
-        document.getElementById('group-2').className = 'screen';
-        document.getElementById('group-3').className = 'screen';
-        document.getElementById('group-4').className = 'screen';
-
-        // 6. Finally, reveal the Game Screen
-        document.getElementById('room-screen').className = 'active';
-    }
-
-    // A helper function to hide hints when entering a new room
-    function resetHints() {
-        // Hide the text paragraphs
-        document.getElementById('hint-text-1').style.display = 'none';
-        document.getElementById('hint-text-2').style.display = 'none';
-        document.getElementById('hint-text-3').style.display = 'none';
-
-        // Show the buttons again (in case they were hidden)
-        document.getElementById('hint-btn-1').style.display = 'inline-block';
-        document.getElementById('hint-btn-2').style.display = 'inline-block';
-        document.getElementById('hint-btn-3').style.display = 'inline-block';
-    }
-
-    // The function for the "Give Up / Back" button inside the room
-    function exitRoom() {
-        // 1. Hide the Room Screen
-        document.getElementById('room-screen').className = 'screen';
-
-        // 2. Figure out which Group to go back to.
-        // Math trick: Room 1-5 is Group 1. Room 6-10 is Group 2.
-        // We divide by 5 and round up!
-        var groupToGoBackTo = Math.ceil(currentActiveRoom / 5);
-
-        // 3. Show that group
-        var groupID = 'group-' + groupToGoBackTo;
-        document.getElementById(groupID).className = 'active';
-    }
-
-    // FUNCTION: Reveal a hint and subtract points
-    function revealHint(hintNumber) {
-        // 1. Hide the button
-        document.getElementById('hint-btn-' + hintNumber).style.display = 'none';
-        
-        // 2. Show the text
-        document.getElementById('hint-text-' + hintNumber).style.display = 'block';
-
-        // 3. Subtract Score
-        if(hintNumber === 1) totalScore -= 5;
-        if(hintNumber === 2) totalScore -= 10;
-        if(hintNumber === 3) totalScore -= 15;
-
-        // 4. Update the Score on the screen (We need to update the landing page text)
-        document.getElementById('current-score').innerText = totalScore;
-    }
-
-  // FUNCTION: Complete the room and add points
-function completeRoom() {
-        // 1. SHOW THE FANFARE!
-        // We change display to 'flex' so it centers the text
-        document.getElementById('success-overlay').style.display = 'flex';
-
-        // 2. Add points behind the scenes
-        totalScore += 100;
-        document.getElementById('current-score').innerText = totalScore;
-
-        // 3. Cross out the button behind the scenes
-        var buttonId = 'btn-room-' + currentActiveRoom;
-        var buttonElement = document.getElementById(buttonId);
-        if (buttonElement) {
-            buttonElement.classList.add('completed-room');
+        function resetHints() {
+            document.getElementById('hint-text-1').style.display = 'none';
+            document.getElementById('hint-text-2').style.display = 'none';
+            document.getElementById('hint-text-3').style.display = 'none';
+            document.getElementById('hint-btn-1').style.display = 'inline-block';
+            document.getElementById('hint-btn-2').style.display = 'inline-block';
+            document.getElementById('hint-btn-3').style.display = 'inline-block';
         }
 
-        // 4. WAIT 2 SECONDS... THEN GO BACK
-        setTimeout(function() {
-            
-            // Hide the fanfare
-            document.getElementById('success-overlay').style.display = 'none';
-
-            // Switch screens
+        function exitRoom() {
             document.getElementById('room-screen').className = 'screen';
-            document.getElementById('landing-screen').className = 'active';
+            var groupToGoBackTo = Math.ceil(currentActiveRoom / 5);
+            var groupID = 'group-' + groupToGoBackTo;
+            document.getElementById(groupID).className = 'active';
+        }
 
-        }, 5000); // 5000 milliseconds = 5 seconds
-    } 
+        // --- SCORING FUNCTIONS (With Auto-Save) ---
+
+        function revealHint(hintNumber) {
+            document.getElementById('hint-btn-' + hintNumber).style.display = 'none';
+            document.getElementById('hint-text-' + hintNumber).style.display = 'block';
+
+            if(hintNumber === 1) totalScore -= 5;
+            if(hintNumber === 2) totalScore -= 10;
+            if(hintNumber === 3) totalScore -= 15;
+
+            document.getElementById('current-score').innerText = totalScore;
             
-    </script>
+            // SAVE DATA
+            saveGameData();
+        }
 
+        function completeRoom() {
+            // 1. Show Fanfare
+            document.getElementById('success-overlay').style.display = 'flex';
+
+            // 2. Update Score
+            totalScore += 100;
+            document.getElementById('current-score').innerText = totalScore;
+
+            // 3. Mark visual button as done
+            var buttonId = 'btn-room-' + currentActiveRoom;
+            var buttonElement = document.getElementById(buttonId);
+            if (buttonElement) {
+                buttonElement.classList.add('completed-room');
+            }
+
+            // 4. SAVE DATA
+            // We verify if we already saved this room to avoid duplicates
+            if (!completedRooms.includes(currentActiveRoom)) {
+                completedRooms.push(currentActiveRoom); // Add to memory list
+                saveGameData(); // Save to browser
+            }
+
+            // 5. Wait 5 seconds then return
+            setTimeout(function() {
+                document.getElementById('success-overlay').style.display = 'none';
+                document.getElementById('room-screen').className = 'screen';
+                document.getElementById('landing-screen').className = 'active';
+            }, 5000); 
+        }
+
+        // --- SAVE/RESET HELPERS ---
+
+        function saveGameData() {
+            // Save the score number
+            localStorage.setItem('siteScore', totalScore);
+            // Save the list of rooms (must be converted to string text)
+            localStorage.setItem('siteRooms', JSON.stringify(completedRooms));
+        }
+
+        function resetGame() {
+            if(confirm("Are you sure? This will delete all progress.")) {
+                // Clear the browser memory
+                localStorage.clear();
+                // Reload the page to start fresh
+                location.reload();
+            }
+        }
+
+        // --- THE HINT DATABASE ---
+        var roomData = {
+            1: {
+                hint1: "Room 1 Hint 1: Check under the doormat.",
+                hint2: "Room 1 Hint 2: The key is silver.",
+                hint3: "Room 1 Hint 3: Code is 5555."
+            },
+            2: {
+                hint1: "Room 2 Hint 1: Look at the painting.",
+                hint2: "Room 2 Hint 2: Count the apples.",
+                hint3: "Room 2 Hint 3: It is behind the chair."
+            },
+            3: {
+                hint1: "Room 3 Hint 1: Text goes here...",
+                hint2: "Room 3 Hint 2: Text goes here...",
+                hint3: "Room 3 Hint 3: Text goes here..."
+            },
+            4: { hint1: "...", hint2: "...", hint3: "..." },
+            5: { hint1: "...", hint2: "...", hint3: "..." },
+            6: { hint1: "...", hint2: "...", hint3: "..." },
+            7: { hint1: "...", hint2: "...", hint3: "..." },
+            8: { hint1: "...", hint2: "...", hint3: "..." },
+            9: { hint1: "...", hint2: "...", hint3: "..." },
+            10: { hint1: "...", hint2: "...", hint3: "..." },
+            11: { hint1: "...", hint2: "...", hint3: "..." },
+            12: { hint1: "...", hint2: "...", hint3: "..." },
+            13: { hint1: "...", hint2: "...", hint3: "..." },
+            14: { hint1: "...", hint2: "...", hint3: "..." },
+            15: { hint1: "...", hint2: "...", hint3: "..." },
+            16: { hint1: "...", hint2: "...", hint3: "..." },
+            17: { hint1: "...", hint2: "...", hint3: "..." },
+            18: { hint1: "...", hint2: "...", hint3: "..." },
+            19: { hint1: "...", hint2: "...", hint3: "..." },
+            20: { hint1: "...", hint2: "...", hint3: "..." }
+        };
+
+    </script>
 </body>
 </html>
+
 
 
 
