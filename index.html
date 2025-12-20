@@ -285,13 +285,21 @@
         var currentActiveRoom = 0; 
         var totalScore = 0; 
         
-        // NEW: An array to keep track of which rooms are done (e.g., [1, 5, 12])
+        // An array to keep track of which rooms are done (e.g., [1, 5, 12])
         var completedRooms = []; 
-
+        
+        //An object to track purchased hints per room
+        // Format will look like: { "1": [1, 2], "5": [1] }
+        var purchasedHints = {};
+        
         // --- ON LOAD: CHECK FOR SAVED GAME ---
         // This runs instantly when the page loads
         var savedScore = localStorage.getItem('siteScore');
         var savedRooms = localStorage.getItem('siteRooms');
+        var savedHints = localStorage.getItem('siteHints');
+        if (savedHints) {
+            purchasedHints = JSON.parse(savedHints);
+        }
 
         if (savedScore) {
             // 1. Restore the Score
@@ -341,23 +349,30 @@
                 document.getElementById('hint-text-1').innerText = data.hint1;
                 document.getElementById('hint-text-2').innerText = data.hint2;
                 document.getElementById('hint-text-3').innerText = data.hint3;
-            } else {
-                document.getElementById('hint-text-1').innerText = "Hints coming soon...";
-                document.getElementById('hint-text-2').innerText = "Hints coming soon...";
-                document.getElementById('hint-text-3').innerText = "Hints coming soon...";
             }
 
+            // Reset all hints to hidden first
             resetHints();
 
-            // Hide menus
-            document.getElementById('group-1').className = 'screen';
-            document.getElementById('group-2').className = 'screen';
-            document.getElementById('group-3').className = 'screen';
-            document.getElementById('group-4').className = 'screen';
-            
-            // Show Room
-            document.getElementById('room-screen').className = 'active';
-        }
+            // NEW: Check if this room has hints already bought
+            if (purchasedHints[roomNumber]) {
+                var hintsForThisRoom = purchasedHints[roomNumber];
+                
+                // If hint 1 was bought before, show it now for free
+                if (hintsForThisRoom.includes(1)) {
+                    document.getElementById('hint-btn-1').style.display = 'none';
+                    document.getElementById('hint-text-1').style.display = 'block';
+                }
+                if (hintsForThisRoom.includes(2)) {
+                    document.getElementById('hint-btn-2').style.display = 'none';
+                    document.getElementById('hint-text-2').style.display = 'block';
+                }
+                if (hintsForThisRoom.includes(3)) {
+                    document.getElementById('hint-btn-3').style.display = 'none';
+                    document.getElementById('hint-text-3').style.display = 'block';
+                }
+            }
+
 
         function resetHints() {
             document.getElementById('hint-text-1').style.display = 'none';
@@ -377,20 +392,35 @@
 
         // --- SCORING FUNCTIONS (With Auto-Save) ---
 
-        function revealHint(hintNumber) {
-            document.getElementById('hint-btn-' + hintNumber).style.display = 'none';
-            document.getElementById('hint-text-' + hintNumber).style.display = 'block';
+       function revealHint(hintNumber) {
+            // Check if hint was already bought to prevent double charging
+            if (!purchasedHints[currentActiveRoom]) {
+                purchasedHints[currentActiveRoom] = [];
+            }
 
-            if(hintNumber === 1) totalScore -= 5;
-            if(hintNumber === 2) totalScore -= 10;
-            if(hintNumber === 3) totalScore -= 15;
+            // Only subtract points if they haven't bought it in THIS session
+            if (!purchasedHints[currentActiveRoom].includes(hintNumber)) {
+                document.getElementById('hint-btn-' + hintNumber).style.display = 'none';
+                document.getElementById('hint-text-' + hintNumber).style.display = 'block';
 
-            document.getElementById('current-score').innerText = totalScore;
-            
-            // SAVE DATA
-            saveGameData();
+                if(hintNumber === 1) totalScore -= 5;
+                if(hintNumber === 2) totalScore -= 10;
+                if(hintNumber === 3) totalScore -= 15;
+
+                document.getElementById('current-score').innerText = totalScore;
+                
+                // Record the purchase
+                purchasedHints[currentActiveRoom].push(hintNumber);
+                saveGameData();
+            }
         }
 
+        function saveGameData() {
+            localStorage.setItem('siteScore', totalScore);
+            localStorage.setItem('siteRooms', JSON.stringify(completedRooms));
+            // NEW: Save the hints too!
+            localStorage.setItem('siteHints', JSON.stringify(purchasedHints));
+        }
         function completeRoom() {
             // 1. Show Fanfare
             document.getElementById('success-overlay').style.display = 'flex';
@@ -423,12 +453,6 @@
 
         // --- SAVE/RESET HELPERS ---
 
-        function saveGameData() {
-            // Save the score number
-            localStorage.setItem('siteScore', totalScore);
-            // Save the list of rooms (must be converted to string text)
-            localStorage.setItem('siteRooms', JSON.stringify(completedRooms));
-        }
 
         function resetGame() {
             if(confirm("Are you sure? This will delete all progress.")) {
@@ -478,23 +502,6 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
