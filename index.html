@@ -93,10 +93,52 @@
             opacity: 0.5; /* Make it look faded */
             background-color: #222 !important; /* Make it darker */
         }
+
+/* THE PARTY SCREEN */
+        #success-overlay {
+            position: fixed; /* Sit on top of everything */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); /* Pitch black background */
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it is on top of everything */
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        #success-overlay h1 {
+            color: #2ecc71; /* Neon Green */
+            font-size: 3rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px #2ecc71; /* Glowing effect */
+            margin-bottom: 10px;
+        }
+
+        #success-overlay p {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
         
     </style> </head>
 <body>
 
+<div id="success-overlay">
+        <h1>Room Cleared!</h1>
+        <p>+100 Points</p>
+    </div>
+
+        
     <div id="landing-screen" class="active">
         
         <div id="logo-container">
@@ -366,30 +408,40 @@ function openRoom(roomNumber) {
     }
 
   // FUNCTION: Complete the room and add points
-    function completeRoom() {
-        // 1. Add 100 points
-        totalScore += 100;
+function completeRoom() {
+        // 1. SHOW THE FANFARE!
+        // We change display to 'flex' so it centers the text
+        document.getElementById('success-overlay').style.display = 'flex';
 
-        // 2. Update the visual score
+        // 2. Add points behind the scenes
+        totalScore += 100;
         document.getElementById('current-score').innerText = totalScore;
 
-        // 3. CROSS OUT THE ROOM BUTTON
+        // 3. Cross out the button behind the scenes
         var buttonId = 'btn-room-' + currentActiveRoom;
         var buttonElement = document.getElementById(buttonId);
-        
         if (buttonElement) {
             buttonElement.classList.add('completed-room');
         }
 
-        // 4. Return to Landing Page (IMMEDIATELY - No Pop-up)
-        document.getElementById('room-screen').className = 'screen';
-        document.getElementById('landing-screen').className = 'active';
-    }   
+        // 4. WAIT 2 SECONDS... THEN GO BACK
+        setTimeout(function() {
+            
+            // Hide the fanfare
+            document.getElementById('success-overlay').style.display = 'none';
+
+            // Switch screens
+            document.getElementById('room-screen').className = 'screen';
+            document.getElementById('landing-screen').className = 'active';
+
+        }, 2000); // 2000 milliseconds = 2 seconds
+    } 
             
     </script>
 
 </body>
 </html>
+
 
 
 
