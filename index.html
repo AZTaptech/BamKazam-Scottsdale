@@ -230,33 +230,86 @@
             document.getElementById('landing-screen').className = 'active';
         }
 
+// --- THE HINT DATABASE ---
+    // This is where you edit the text for every room!
+    var roomData = {
+        1: {
+            hint1: "Room 1 Hint 1: Check under the doormat.",
+            hint2: "Room 1 Hint 2: The key is silver.",
+            hint3: "Room 1 Hint 3: Code is 5555."
+        },
+        2: {
+            hint1: "Room 2 Hint 1: Look at the painting.",
+            hint2: "Room 2 Hint 2: Count the apples.",
+            hint3: "Room 2 Hint 3: It is behind the chair."
+        },
+        3: {
+            hint1: "Room 3 Hint 1: Text goes here...",
+            hint2: "Room 3 Hint 2: Text goes here...",
+            hint3: "Room 3 Hint 3: Text goes here..."
+        },
+        // ... You can copy/paste this block for rooms 4-20 ...
+        4: { hint1: "...", hint2: "...", hint3: "..." },
+        5: { hint1: "...", hint2: "...", hint3: "..." },
+        6: { hint1: "...", hint2: "...", hint3: "..." },
+        7: { hint1: "...", hint2: "...", hint3: "..." },
+        8: { hint1: "...", hint2: "...", hint3: "..." },
+        9: { hint1: "...", hint2: "...", hint3: "..." },
+        10: { hint1: "...", hint2: "...", hint3: "..." },
+        11: { hint1: "...", hint2: "...", hint3: "..." },
+        12: { hint1: "...", hint2: "...", hint3: "..." },
+        13: { hint1: "...", hint2: "...", hint3: "..." },
+        14: { hint1: "...", hint2: "...", hint3: "..." },
+        15: { hint1: "...", hint2: "...", hint3: "..." },
+        16: { hint1: "...", hint2: "...", hint3: "..." },
+        17: { hint1: "...", hint2: "...", hint3: "..." },
+        18: { hint1: "...", hint2: "...", hint3: "..." },
+        19: { hint1: "...", hint2: "...", hint3: "..." },
+        20: { hint1: "...", hint2: "...", hint3: "..." }
+    };
+
+
+            
         // FUNCTION 3: Placeholder for opening a specific room (coming next!)
         // --- VARIABLES ( The Memory of the App) ---
     var currentActiveRoom = 0; // Stores which room the user is currently inside
     var totalScore = 0; // Stores the user's running score
 
     // This replaces the old "alert" function
-    function openRoom(roomNumber) {
+function openRoom(roomNumber) {
         
-        // 1. Save the room number so we can use it for scoring later
+        // 1. Save the room number
         currentActiveRoom = roomNumber;
 
-        // 2. Change the Title Text on the screen
-        // We find the header and replace "Room X" with the real number
-        document.getElementById('room-title').innerText = 'Room ' + roomNumber;
+        // 2. FIND THE DATA for this specific room
+        // We look inside our 'roomData' variable for the number
+        var data = roomData[roomNumber];
 
-        // 3. Reset the Hints (Cover them up again)
-        // We act like a janitor cleaning up the room before the user enters
+        // 3. Update the HTML Text
+        document.getElementById('room-title').innerText = 'Room ' + roomNumber;
+        
+        // This is the magic part: We inject the text from the database into the screen
+        if (data) {
+            document.getElementById('hint-text-1').innerText = data.hint1;
+            document.getElementById('hint-text-2').innerText = data.hint2;
+            document.getElementById('hint-text-3').innerText = data.hint3;
+        } else {
+            // Fallback if you forgot to add data for a room
+            document.getElementById('hint-text-1').innerText = "Hints coming soon...";
+            document.getElementById('hint-text-2').innerText = "Hints coming soon...";
+            document.getElementById('hint-text-3').innerText = "Hints coming soon...";
+        }
+
+        // 4. Reset the Hints (Cover them up again)
         resetHints();
 
-        // 4. Hide all the Group menus
-        // We hide everything to be safe, so we don't have overlapping screens
+        // 5. Hide all the Group menus
         document.getElementById('group-1').className = 'screen';
         document.getElementById('group-2').className = 'screen';
         document.getElementById('group-3').className = 'screen';
         document.getElementById('group-4').className = 'screen';
 
-        // 5. Finally, reveal the Game Screen
+        // 6. Finally, reveal the Game Screen
         document.getElementById('room-screen').className = 'active';
     }
 
@@ -325,9 +378,6 @@
 
 </body>
 </html>
-
-
-
 
 
 
