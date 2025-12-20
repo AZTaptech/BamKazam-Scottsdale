@@ -365,7 +365,7 @@ function openRoom(roomNumber) {
         document.getElementById('current-score').innerText = totalScore;
     }
 
-   // FUNCTION: Complete the room and add points
+  // FUNCTION: Complete the room and add points
     function completeRoom() {
         // 1. Add 100 points
         totalScore += 100;
@@ -374,27 +374,23 @@ function openRoom(roomNumber) {
         document.getElementById('current-score').innerText = totalScore;
 
         // 3. CROSS OUT THE ROOM BUTTON
-        // We find the specific button ID (e.g., 'btn-room-5')
         var buttonId = 'btn-room-' + currentActiveRoom;
         var buttonElement = document.getElementById(buttonId);
         
-        // We add the class that makes it look crossed out
         if (buttonElement) {
             buttonElement.classList.add('completed-room');
         }
 
-        // 4. Kick them back to the landing page
-        alert("Room Completed! +100 Points");
-        
-        // Hide room, Show Landing Page
+        // 4. Return to Landing Page (IMMEDIATELY - No Pop-up)
         document.getElementById('room-screen').className = 'screen';
         document.getElementById('landing-screen').className = 'active';
-    }    
+    }   
             
     </script>
 
 </body>
 </html>
+
 
 
 
