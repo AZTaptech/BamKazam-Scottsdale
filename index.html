@@ -50,10 +50,20 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.3); /* Adds a subtle shadow for depth */
         } /* Closes the score display style rule */
 
-        h2 { /* Targets the heading text */
-            margin: 0; /* Removes default spacing styling from the heading */
-            font-size: 1.5rem; /* Makes the font size nice and readable */
-        } /* Closes the h2 style rule */
+        h2 {
+            /* Text Styling */
+            margin: 0;
+            font-size: 1.5rem;
+            
+            /* Centering */
+            text-align: center;
+            width: 100%; /* Ensures the line goes all the way across */
+            
+            /* The Separator Line */
+            border-bottom: 1px solid #333; /* A thin dark grey line */
+            padding-bottom: 15px; /* Space between text and line */
+            margin-bottom: 20px; /* Space between line and buttons */
+        }
 
         #current-score { /* Targets the actual score number */
             color: #00d4ff; /* Makes the score number a bright cyan color */
@@ -454,6 +464,7 @@
     </script>
 </body>
 </html>
+
 
 
 
