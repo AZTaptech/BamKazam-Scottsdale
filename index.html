@@ -389,12 +389,7 @@
         }
 
         if (!purchasedHints[currentActiveRoom].includes(hintNumber)) {
-            // Safety check for score
-            if (totalScore < 5) {
-                alert("Not enough points!");
-                return;
-            }
-
+            
             document.getElementById('hint-btn-1').style.display = 'none';
             document.getElementById('hint-text-1').style.display = 'block';
 
@@ -502,3 +497,4 @@ function completeRoom() {
 </script>
 </body>
 </html>
+
