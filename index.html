@@ -418,19 +418,51 @@
 function completeRoom() {
     if (completedRooms.includes(currentActiveRoom)) return;
 
-    // 1. Calculate which level this is (1, 2, or 3)
-    // We use the same math from your openRoom function
+    // 1. Calculate Level
     var level = ((currentActiveRoom - 1) % 3) + 1;
 
-    // 2. Decide points based on level
+    // 2. Decide Points
     var pointsEarned = 0;
-    if (level === 1) {
-        pointsEarned = 15;
-    } else if (level === 2) {
-        pointsEarned = 35;
-    } else {
-        pointsEarned = 50; // Level 3
+    if (level === 1) pointsEarned = 15;
+    else if (level === 2) pointsEarned = 35;
+    else pointsEarned = 50;
+
+    // 3. Update Text
+    document.getElementById('success-points-text').innerText = "+" + pointsEarned + " Points";
+
+    var overlay = document.getElementById('success-overlay');
+    overlay.style.animation = 'none';
+    overlay.offsetHeight; 
+    overlay.style.animation = 'fadeIn 0.3s ease-in-out';
+    overlay.style.display = 'flex';
+
+    // 4. Update Score & Save
+    totalScore += pointsEarned;
+    document.getElementById('current-score').innerText = totalScore;
+
+    var buttonId = 'btn-room-' + currentActiveRoom;
+    var buttonElement = document.getElementById(buttonId);
+    if (buttonElement) {
+        buttonElement.classList.add('completed-room');
     }
+
+    completedRooms.push(currentActiveRoom);
+    saveGameData();
+
+    // 5. Navigation Logic (The new part)
+    setTimeout(function() {
+        overlay.style.display = 'none';
+        
+        if (level < 3) {
+            // Auto-advance to the next room (e.g. Room 1 -> Room 2)
+            openRoom(currentActiveRoom + 1); 
+        } else {
+            // Level 3 finished -> Kick to Main Menu
+            document.getElementById('room-screen').className = 'screen';
+            showLandingPage();
+        }
+    }, 3000);
+}
 
     // 3. Update the overlay text so the user sees the right amount
     document.getElementById('success-points-text').innerText = "+" + pointsEarned + " Points";
@@ -456,15 +488,22 @@ function completeRoom() {
     completedRooms.push(currentActiveRoom);
     saveGameData();
 
-    setTimeout(function() {
+   setTimeout(function() {
         overlay.style.display = 'none';
-        document.getElementById('room-screen').className = 'screen';
         
-        // Return to the theme menu
-        var themeToGoBackTo = Math.ceil(currentActiveRoom / 3);
-        document.getElementById('theme-' + themeToGoBackTo).className = 'active';
-    }, 3000);
-}
+        // If we just finished Level 1 or 2, go to the next level
+        if (level < 3) {
+            // "openRoom" handles all the screen switching for us
+            openRoom(currentActiveRoom + 1); 
+        } 
+        // If we just finished Level 3, go back to the Main Menu
+        else {
+            document.getElementById('room-screen').className = 'screen'; // Hide room
+            showLandingPage(); // Go to Main Menu
+        }
+
+    }, 3000); // 3 second delay
+} // End of completeRoom function
 
     // --- SAVE/RESET ---
     function saveGameData() {
@@ -512,6 +551,7 @@ function completeRoom() {
 </script>
 </body>
 </html>
+
 
 
 
