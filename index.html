@@ -274,7 +274,7 @@
             <h3>Hints (Cost points!)</h3>
             
             <button onclick="revealHint(1)" id="hint-btn-1" style="background-color: #f1c40f; color: white; border: none;">
-                Show Hint 1 (-5 pts)
+                Show Hint 1 (Free)
             </button>
             <p id="hint-text-1" style="display:none; color: #f1c40f; font-weight: bold;">
                 Here is the first clue...
@@ -390,10 +390,17 @@
 
         if (!purchasedHints[currentActiveRoom].includes(hintNumber)) {
             
-            document.getElementById('hint-btn-1').style.display = 'none';
-            document.getElementById('hint-text-1').style.display = 'block';
+            // Hide button, show text
+            document.getElementById('hint-btn-' + hintNumber).style.display = 'none';
+            document.getElementById('hint-text-' + hintNumber).style.display = 'block';
 
-            totalScore -= 5; // Deduct 5 points
+            // --- CHANGE IS HERE ---
+            // Only deduct points if it is Hint 2 or Hint 3
+            if (hintNumber > 1) {
+                totalScore -= 5; 
+            }
+            // ---------------------
+
             document.getElementById('current-score').innerText = totalScore;
             
             purchasedHints[currentActiveRoom].push(hintNumber);
@@ -497,4 +504,5 @@ function completeRoom() {
 </script>
 </body>
 </html>
+
 
