@@ -510,42 +510,96 @@
         }
     }
 
-    // --- THE HINT DATABASE ---
-    // You can now edit hint1, hint2, and hint3 for every room!
+// --- THE HINT DATABASE ---
     var roomData = {
-        1: { 
-            hint1: "Level 1 - Hint 1: Check under the mat.", 
-            hint2: "Level 1 - Hint 2: It's a key.", 
-            hint3: "Level 1 - Hint 3: Use key on door." 
+        // --- THEME 1: GAME SHOW ---
+        1: { // Wheel of Kazam
+            hint1: "Goal: Solve the phrase and get $2000. Watch your Power Meter.", 
+            hint2: "Strategy: Use small spins to save power. Don't over-spin.", 
+            hint3: "Teamwork: Split the cost of vowels between players to save money." 
         },
-        2: { 
-            hint1: "Level 2 - Hint 1...", 
-            hint2: "Level 2 - Hint 2...", 
-            hint3: "Level 2 - Hint 3..." 
+        2: { // Bampardy
+            hint1: "Goal: Accumulate $2000. Answering 'Wager' questions wrong is safe.", 
+            hint2: "Strategy: Don't just guess! You lose points for wrong answers.", 
+            hint3: "Tip: If you don't know the answer, it is better to not answer at all." 
         },
-        3: { 
-            hint1: "Level 3 - Hint 1...", 
-            hint2: "Level 3 - Hint 2...", 
-            hint3: "Level 3 - Hint 3..." 
+        3: { // Dance Dance Kazam
+            hint1: "Goal: Hit the tiles to earn 100,000 points.", 
+            hint2: "Strategy: Don't let one person solo. Get everyone on the floor.", 
+            hint3: "Win Condition: More people on the floor = Multiplier points." 
         },
-        4: { hint1: "...", hint2: "...", hint3: "..." },
-        5: { hint1: "...", hint2: "...", hint3: "..." },
-        6: { hint1: "...", hint2: "...", hint3: "..." },
-        7: { hint1: "...", hint2: "...", hint3: "..." },
-        8: { hint1: "...", hint2: "...", hint3: "..." },
-        9: { hint1: "...", hint2: "...", hint3: "..." },
+
+        // --- THEME 2: RAT TRAP ---
+        4: { // Collect the Cheese
+            hint1: "The floor is lava. Cheese lights up for only 5 seconds.", 
+            hint2: "Survival: Green lights mean the floor is safe to walk on.", 
+            hint3: "Win Condition: Survive all 3 rounds to unlock the exit." 
+        },
+        5: { // Escape the Rat Traps
+            hint1: "The floor is lava. Get everyone to the 'HOME' mat.", 
+            hint2: "Coordination: Do NOT ring the doorbell until everyone is safe.", 
+            hint3: "Fail Condition: If anyone is still on the start platform, you lose." 
+        },
+        6: { // Eat the Cheese
+            hint1: "Goal: Sit on the cheese wedges. Think 'Goldilocks'.", 
+            hint2: "Logic: Small person = Small cheese. Big person = Big cheese.", 
+            hint3: "Timing: Everyone must sit down at the exact same time." 
+        },
+
+        // --- THEME 3: SPACE ---
+        7: { // Spaceship Pilot
+            hint1: "Goal: Follow the instructions on your specific screens.", 
+            hint2: "Communication: Shout out commands clearly to your teammates.", 
+            hint3: "Focus: Do not ignore the flashing alerts." 
+        },
+        8: { hint1: "Coming soon...", hint2: "Coming soon...", hint3: "Coming soon..." },
+        9: { hint1: "Coming soon...", hint2: "Coming soon...", hint3: "Coming soon..." },
+
+        // --- THEME 4: ISLAND (No data provided yet) ---
         10: { hint1: "...", hint2: "...", hint3: "..." },
         11: { hint1: "...", hint2: "...", hint3: "..." },
         12: { hint1: "...", hint2: "...", hint3: "..." },
-        13: { hint1: "...", hint2: "...", hint3: "..." },
-        14: { hint1: "...", hint2: "...", hint3: "..." },
-        15: { hint1: "...", hint2: "...", hint3: "..." },
-        16: { hint1: "...", hint2: "...", hint3: "..." },
-        17: { hint1: "...", hint2: "...", hint3: "..." },
-        18: { hint1: "...", hint2: "...", hint3: "..." },
+
+        // --- THEME 5: MINESHAFT ---
+        13: { // Dynamite
+            hint1: "Read the DANGER sign. Avoid spiders, snakes, and falling beams.", 
+            hint2: "Puzzle: There is no wire. You need to become the wire.", 
+            hint3: "Solution: Make a human chain holding hands from the Detonator to the Dynamite." 
+        },
+        14: { // Wooden Ball Machine
+            hint1: "Goal: Get ONE ball into the hole with the yellow arrows.", 
+            hint2: "Roles: Have lifters on the side and a spotter looking through the grate.", 
+            hint3: "Technique: Crank the handle to reload. The ball must land DIRECTLY in the hole." 
+        },
+        15: { // Train Tracks
+            hint1: "Goal: Power the tracks. Keep meters in the Green.", 
+            hint2: "Flow: Wheel -> Power Meter -> Voltage Box -> Track Shifter.", 
+            hint3: "Fail Condition: Spinning too fast turns the meter Red and overloads the system." 
+        },
+
+        // --- THEME 6: CAT BURGLAR ---
+        16: { // Security Box
+            hint1: "Floor is lava. Watch out for the woman in the window.", 
+            hint2: "Movement: The tightrope is a shortcut. You can just hug the right wall.", 
+            hint3: "Solution: Connect wire AND press both green buttons at the same time." 
+        },
+        17: { // Security Guard
+            hint1: "Goal: Use the keycard and key without waking the guard.", 
+            hint2: "Search: There are TWO keys in the room. Find them both.", 
+            hint3: "Timing: Insert both keys and the card simultaneously." 
+        },
+        18: { // Museum
+            hint1: "Red Button = Lasers. Blue Button = Phone Call. Don't trip lasers.", 
+            hint2: "Goal: Steal the Umbrella painting (Hinted in Level 1).", 
+            hint3: "Code: 8719 (Daily security code + Year of Water Lilies)." 
+        },
+
+        // --- THEME 7: TEMPLE (No data provided yet) ---
         19: { hint1: "...", hint2: "...", hint3: "..." },
         20: { hint1: "...", hint2: "...", hint3: "..." },
         21: { hint1: "...", hint2: "...", hint3: "..." },
+
+        // --- THEME 8: HEX (No data provided yet) ---
         22: { hint1: "...", hint2: "...", hint3: "..." },
         23: { hint1: "...", hint2: "...", hint3: "..." },
         24: { hint1: "...", hint2: "...", hint3: "..." }
@@ -553,5 +607,6 @@
 </script>
 </body>
 </html>
+
 
 
