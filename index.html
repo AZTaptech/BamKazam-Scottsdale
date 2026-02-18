@@ -486,15 +486,7 @@
         // 5. Navigation Logic
         setTimeout(function() {
             overlay.style.display = 'none';
-            
-            if (level < 3) {
-                // Auto-advance to the next room (e.g. Room 1 -> Room 2)
-                openRoom(currentActiveRoom + 1); 
-            } else {
-                // Level 3 finished -> Kick to Main Menu
-                document.getElementById('room-screen').className = 'screen';
-                showLandingPage();
-            }
+            exitRoom(); 
         }, 3000);
     }
 
@@ -655,3 +647,4 @@
 </script>
 </body>
 </html>
+
