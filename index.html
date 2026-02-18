@@ -105,15 +105,19 @@
             transform: scale(0.98); /* Slightly shrinks the button for a "click" feel */
         } /* Closes the button active state rule */
 
-        .screen { /* Targets the screen class we made earlier */
-            display: none; /* Keeps screens hidden by default */
-        } /* Closes the screen class rule */
+        .screen, .active { /* Ensures layout stays consistent even when active */
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            display: none; /* Default to hidden */
+        }
 
-        .active { /* Targets the active class */
-            display: block; /* Overrides hidden to show the active screen */
-        } /* Closes the active class rule */
-
-/* This class makes the button look finished */
+        .active { 
+            display: block; /* Shows the screen while keeping the layout above */
+        }
+    
         .completed-room {
             text-decoration: line-through !important; /* Cross out text */
             opacity: 0.5; /* Make it look faded */
@@ -651,10 +655,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
